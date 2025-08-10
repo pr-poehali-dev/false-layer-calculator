@@ -14,7 +14,7 @@ const Index = () => {
     depth: 0
   });
   
-  const [material, setMaterial] = useState('standard');
+  const [shape, setShape] = useState('circle');
   const [quantity, setQuantity] = useState(1);
   
   const calculatePrice = () => {
@@ -22,8 +22,8 @@ const Index = () => {
     const area = (dimensions.width * dimensions.height) / 10000; // конвертация в кв.м
     const volume = (dimensions.width * dimensions.height * dimensions.depth) / 1000000; // в куб.м
     
-    const materialMultiplier = material === 'premium' ? 1.5 : material === 'economy' ? 0.8 : 1;
-    const totalPrice = basePrice * area * volume * materialMultiplier * quantity;
+    const shapeMultiplier = shape === 'heart' || shape === 'flower' ? 1.8 : shape === 'hexagon' ? 1.3 : shape === 'square' ? 1.1 : 1;
+    const totalPrice = basePrice * area * volume * shapeMultiplier * quantity;
     
     return Math.round(totalPrice);
   };
@@ -162,12 +162,16 @@ const Index = () => {
                     </div>
                     
                     <div>
-                      <Label className="text-base font-medium">Материал</Label>
-                      <Tabs value={material} onValueChange={setMaterial} className="mt-2">
+                      <Label className="text-base font-medium">Форма изделия</Label>
+                      <Tabs value={shape} onValueChange={setShape} className="mt-2">
                         <TabsList className="grid w-full grid-cols-3">
-                          <TabsTrigger value="economy">Эконом</TabsTrigger>
-                          <TabsTrigger value="standard">Стандарт</TabsTrigger>
-                          <TabsTrigger value="premium">Премиум</TabsTrigger>
+                          <TabsTrigger value="circle">⭕ Круг</TabsTrigger>
+                          <TabsTrigger value="square">⬜ Квадрат</TabsTrigger>
+                          <TabsTrigger value="hexagon">⬡ Шестиуг.</TabsTrigger>
+                        </TabsList>
+                        <TabsList className="grid w-full grid-cols-2 mt-2">
+                          <TabsTrigger value="heart">💖 Сердце</TabsTrigger>
+                          <TabsTrigger value="flower">🌼 Ромашка</TabsTrigger>
                         </TabsList>
                       </Tabs>
                     </div>
@@ -204,9 +208,12 @@ const Index = () => {
                         </span>
                       </div>
                       <div className="flex justify-between">
-                        <span className="text-gray-600">Материал:</span>
+                        <span className="text-gray-600">Форма:</span>
                         <Badge variant="secondary">
-                          {material === 'economy' ? 'Эконом' : material === 'premium' ? 'Премиум' : 'Стандарт'}
+                          {shape === 'circle' ? '⭕ Круг' : 
+                           shape === 'square' ? '⬜ Квадрат' : 
+                           shape === 'hexagon' ? '⬡ Шестиугольник' : 
+                           shape === 'heart' ? '💖 Сердце' : '🌼 Ромашка'}
                         </Badge>
                       </div>
                       <div className="flex justify-between">
