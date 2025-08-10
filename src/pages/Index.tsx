@@ -72,54 +72,7 @@ const Index = () => {
     }
   };
 
-  const handleOrderSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    
-    // Формируем данные заказа
-    const orderDetails = cart.map(item => 
-      `${item.dimensions.height}×${item.dimensions.width}×${item.dimensions.depth} см - ${
-        item.shape === 'circle' ? 'Круг' : 
-        item.shape === 'square' ? 'Квадрат' : 
-        item.shape === 'hexagon' ? 'Шестиугольник' : 
-        item.shape === 'heart' ? 'Сердце' : 'Ромашка'
-      } × ${item.quantity} шт. = ${item.price.toLocaleString()} ₽`
-    ).join('\n');
-    
-    const totalPrice = cart.reduce((sum, item) => sum + item.price, 0);
-    
-    // Формируем тело письма
-    const subject = 'Новый заказ Grigorenko_cakes';
-    const body = `Новый заказ от клиента:
 
-КОНТАКТНЫЕ ДАННЫЕ:
-Имя: ${orderData.name}
-Телефон: ${orderData.phone}
-Email: ${orderData.email || 'не указан'}
-Город: ${orderData.city}
-Адрес доставки: ${orderData.address}
-
-ЗАКАЗ:
-${orderDetails}
-
-ОБЩАЯ СТОИМОСТЬ: ${totalPrice.toLocaleString()} ₽
-
-КОММЕНТАРИЙ:
-${orderData.notes || 'нет комментариев'}
-
----
-Заказ отправлен через сайт Grigorenko_cakes`;
-
-    // Открываем почтовый клиент
-    const mailtoLink = `mailto:mtelsv@bk.ru?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-    window.open(mailtoLink);
-    
-    // Очищаем корзину и форму
-    setCart([]);
-    setOrderData({ name: '', phone: '', email: '', address: '', city: '', notes: '' });
-    setShowOrderForm(false);
-    
-    alert('Заказ отправлен! Проверьте почтовый клиент.');
-  };
 
   const handleRegistration = (e: React.FormEvent) => {
     e.preventDefault();
@@ -183,18 +136,6 @@ ${orderData.notes || 'Нет'}`;
     } catch (error) {
       alert('Ошибка отправки. Попробуйте ещё раз.');
     }
-  };
-  
-  const calculatePrice = () => {
-    // Данные уже в см
-    const heightCm = dimensions.height;
-    const widthCm = dimensions.width;
-    const depthCm = dimensions.depth;
-    
-    // Формула: (((высота+3)×(длина+3)×(ширина+3))×0.005558)×5.2
-    const totalPrice = ((heightCm + 3) * (widthCm + 3) * (depthCm + 3)) * 0.005558 * 5.2 * quantity;
-    
-    return Math.round(totalPrice);
   };
 
   return (
