@@ -17,6 +17,14 @@ const Index = () => {
   const [shape, setShape] = useState('circle');
   const [quantity, setQuantity] = useState(1);
   const [cart, setCart] = useState<any[]>([]);
+  const [showRegistration, setShowRegistration] = useState(false);
+  const [registrationData, setRegistrationData] = useState({
+    name: '',
+    phone: '',
+    email: '',
+    city: '',
+    businessType: 'individual'
+  });
 
   const addToCart = () => {
     if (dimensions.width && dimensions.height && dimensions.depth) {
@@ -33,6 +41,22 @@ const Index = () => {
       setQuantity(1);
       setShape('circle');
     }
+  };
+
+  const handleRegistration = (e: React.FormEvent) => {
+    e.preventDefault();
+    // Здесь будет отправка данных на сервер
+    console.log('Регистрация:', registrationData);
+    setShowRegistration(false);
+    // Очищаем форму
+    setRegistrationData({
+      name: '',
+      phone: '',
+      email: '',
+      city: '',
+      businessType: 'individual'
+    });
+    alert('Спасибо за регистрацию! Мы свяжемся с вами в ближайшее время.');
   };
   
   const calculatePrice = () => {
@@ -472,11 +496,25 @@ const Index = () => {
             ))}
           </div>
           
-          <div className="text-center">
-            <Button size="lg" className="bg-primary hover:bg-orange-600 text-white px-8">
-              <Icon name="MessageCircle" size={20} className="mr-2" />
-              Начать проект
-            </Button>
+          <div className="text-center space-y-4">
+            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <Button size="lg" className="bg-primary hover:bg-orange-600 text-white px-8">
+                <Icon name="MessageCircle" size={20} className="mr-2" />
+                Начать проект
+              </Button>
+              <Button 
+                size="lg" 
+                variant="outline" 
+                onClick={() => setShowRegistration(true)}
+                className="border-2 border-white text-white hover:bg-white hover:text-gray-900 px-8"
+              >
+                <Icon name="UserPlus" size={20} className="mr-2" />
+                Регистрация клиента
+              </Button>
+            </div>
+            <p className="text-gray-400 text-sm">
+              Зарегистрируйтесь для получения скидок и персональных предложений
+            </p>
           </div>
         </div>
       </section>
@@ -496,6 +534,111 @@ const Index = () => {
           </div>
         </div>
       </footer>
+
+      {/* Модальное окно регистрации */}
+      {showRegistration && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50">
+          <Card className="w-full max-w-md max-h-[90vh] overflow-y-auto">
+            <CardHeader>
+              <div className="flex justify-between items-center">
+                <CardTitle className="text-2xl">
+                  <Icon name="UserPlus" className="inline mr-2 text-primary" />
+                  Регистрация клиента
+                </CardTitle>
+                <Button 
+                  variant="ghost" 
+                  size="sm"
+                  onClick={() => setShowRegistration(false)}
+                >
+                  <Icon name="X" size={20} />
+                </Button>
+              </div>
+              <CardDescription>
+                Заполните форму для получения персональных предложений
+              </CardDescription>
+            </CardHeader>
+            
+            <CardContent>
+              <form onSubmit={handleRegistration} className="space-y-4">
+                <div>
+                  <Label htmlFor="reg-name">Имя *</Label>
+                  <Input
+                    id="reg-name"
+                    type="text"
+                    required
+                    value={registrationData.name}
+                    onChange={(e) => setRegistrationData({...registrationData, name: e.target.value})}
+                    placeholder="Ваше имя"
+                    className="mt-1"
+                  />
+                </div>
+                
+                <div>
+                  <Label htmlFor="reg-phone">Телефон *</Label>
+                  <Input
+                    id="reg-phone"
+                    type="tel"
+                    required
+                    value={registrationData.phone}
+                    onChange={(e) => setRegistrationData({...registrationData, phone: e.target.value})}
+                    placeholder="+7 (XXX) XXX-XX-XX"
+                    className="mt-1"
+                  />
+                </div>
+                
+                <div>
+                  <Label htmlFor="reg-email">Email</Label>
+                  <Input
+                    id="reg-email"
+                    type="email"
+                    value={registrationData.email}
+                    onChange={(e) => setRegistrationData({...registrationData, email: e.target.value})}
+                    placeholder="your@email.com"
+                    className="mt-1"
+                  />
+                </div>
+                
+                <div>
+                  <Label htmlFor="reg-city">Город</Label>
+                  <Input
+                    id="reg-city"
+                    type="text"
+                    value={registrationData.city}
+                    onChange={(e) => setRegistrationData({...registrationData, city: e.target.value})}
+                    placeholder="Ваш город"
+                    className="mt-1"
+                  />
+                </div>
+                
+                <div>
+                  <Label>Тип деятельности</Label>
+                  <Tabs value={registrationData.businessType} onValueChange={(value) => setRegistrationData({...registrationData, businessType: value})} className="mt-2">
+                    <TabsList className="grid w-full grid-cols-2">
+                      <TabsTrigger value="individual">🏠 Частный</TabsTrigger>
+                      <TabsTrigger value="business">🏢 Бизнес</TabsTrigger>
+                    </TabsList>
+                  </Tabs>
+                </div>
+                
+                <div className="pt-4 space-y-3">
+                  <Button type="submit" className="w-full bg-primary hover:bg-orange-600 text-white">
+                    <Icon name="Check" size={20} className="mr-2" />
+                    Зарегистрироваться
+                  </Button>
+                  <Button 
+                    type="button" 
+                    variant="outline" 
+                    onClick={() => setShowRegistration(false)}
+                    className="w-full"
+                  >
+                    Отмена
+                  </Button>
+                </div>
+              </form>
+            </CardContent>
+          </Card>
+        </div>
+      )}
     </div>
   );
 };
