@@ -55,7 +55,7 @@ const Index = () => {
           <nav className="flex items-center justify-between">
             <div className="flex items-center space-x-2">
               <Icon name="Building2" className="text-primary" size={32} />
-              <h1 className="text-2xl font-heading font-bold text-gray-900">ФальшЯрус</h1>
+              <h1 className="text-2xl font-heading font-bold text-gray-900">🎂 ФальшЯрус</h1>
             </div>
             
             <div className="hidden md:flex items-center space-x-8">
@@ -81,17 +81,17 @@ const Index = () => {
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             <div className="animate-fade-in">
               <Badge className="mb-4 bg-primary/10 text-primary hover:bg-primary/20">
-                Профессиональное изготовление
+                🎂 Для кондитеров и творчества
               </Badge>
               <h1 className="text-5xl lg:text-6xl font-heading font-extrabold text-gray-900 mb-6">
                 Фальш ярусы
                 <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
-                  {' '}высочайшего качества
+                  {' '}для тортов и поделок
                 </span>
               </h1>
               <p className="text-xl text-gray-600 mb-8 leading-relaxed">
-                Создаем архитектурные решения любой сложности. 
-                Современные технологии, точные расчеты, быстрая установка.
+                Изготавливаем ярусы из пенопласта для многоярусных тортов, макетов, 
+                букетов из конфет и творческих проектов. Любые формы и размеры!
               </p>
               <div className="flex flex-col sm:flex-row gap-4">
                 <Button size="lg" className="bg-primary hover:bg-orange-600 text-white px-8">
@@ -99,16 +99,16 @@ const Index = () => {
                   Рассчитать стоимость
                 </Button>
                 <Button size="lg" variant="outline" className="border-2 border-primary text-primary hover:bg-primary hover:text-white px-8">
-                  <Icon name="Play" size={20} className="mr-2" />
-                  Смотреть портфолио
+                  <Icon name="Heart" size={20} className="mr-2" />
+                  Смотреть работы
                 </Button>
               </div>
             </div>
             
             <div className="animate-slide-up">
               <img 
-                src="/img/c392ca96-cedc-4eb5-bc8d-7d4fa09b727a.jpg" 
-                alt="Строительные работы" 
+                src="/img/45dd05f7-47fc-4854-b799-6b1dfd930b3d.jpg" 
+                alt="Многоярусные торты и поделки" 
                 className="w-full h-[500px] object-cover rounded-3xl shadow-2xl animate-float"
               />
             </div>
@@ -334,10 +334,10 @@ const Index = () => {
           
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
             {[
-              { icon: 'Ruler', title: 'Замеры', desc: 'Точные замеры на объекте' },
-              { icon: 'PenTool', title: 'Проектирование', desc: '3D визуализация проекта' },
-              { icon: 'Factory', title: 'Производство', desc: 'Изготовление по чертежам' },
-              { icon: 'Wrench', title: 'Монтаж', desc: 'Профессиональная установка' }
+              { icon: 'Ruler', title: 'Замеры', desc: 'Точные размеры по эскизу' },
+              { icon: 'Palette', title: 'Дизайн', desc: 'Подбор формы и стиля' },
+              { icon: 'Package', title: 'Изготовление', desc: 'Вырезка из пенопласта' },
+              { icon: 'Truck', title: 'Доставка', desc: 'Бережная упаковка и доставка' }
             ].map((service, index) => (
               <Card key={index} className="text-center hover:shadow-lg transition-all duration-300 animate-scale-in">
                 <CardContent className="p-6">
@@ -390,40 +390,40 @@ const Index = () => {
         <div className="container mx-auto px-4">
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             <div className="animate-fade-in">
-              <Badge className="mb-4 bg-secondary/10 text-secondary">О компании</Badge>
+              <Badge className="mb-4 bg-secondary/10 text-secondary">О нас</Badge>
               <h2 className="text-4xl font-heading font-bold text-gray-900 mb-6">
-                15 лет опыта в строительстве
+                8 лет помогаем кондитерам
               </h2>
               <p className="text-lg text-gray-600 mb-6 leading-relaxed">
-                Мы специализируемся на изготовлении фальш ярусов любой сложности. 
-                Наша команда профессионалов использует только качественные материалы 
-                и современное оборудование.
+                Специализируемся на изготовлении фальш ярусов из качественного пенопласта. 
+                Помогаем кондитерам, флористам и рукодельницам воплощать самые смелые идеи 
+                в многоярусных тортах и творческих проектах.
               </p>
               
               <div className="grid grid-cols-2 gap-6 mb-8">
                 <div className="text-center p-4 bg-white rounded-xl shadow-md">
-                  <div className="text-3xl font-bold text-primary mb-2">500+</div>
-                  <div className="text-sm text-gray-600">Проектов</div>
+                  <div className="text-3xl font-bold text-primary mb-2">2000+</div>
+                  <div className="text-sm text-gray-600">Тортов</div>
                 </div>
                 <div className="text-center p-4 bg-white rounded-xl shadow-md">
-                  <div className="text-3xl font-bold text-secondary mb-2">15</div>
+                  <div className="text-3xl font-bold text-secondary mb-2">8</div>
                   <div className="text-sm text-gray-600">Лет опыта</div>
                 </div>
               </div>
               
               <Button className="bg-secondary hover:bg-blue-600 text-white">
-                <Icon name="Users" size={20} className="mr-2" />
-                Познакомиться с командой
+                <Icon name="Heart" size={20} className="mr-2" />
+                Наши работы
               </Button>
             </div>
             
             <div className="animate-slide-up">
               <div className="bg-gradient-to-br from-primary/10 to-secondary/10 p-8 rounded-3xl">
-                <Icon name="Award" size={64} className="text-primary mb-4" />
-                <h3 className="text-2xl font-heading font-bold mb-4">Гарантия качества</h3>
+                <Icon name="Heart" size={64} className="text-primary mb-4" />
+                <h3 className="text-2xl font-heading font-bold mb-4">Качественный пенопласт</h3>
                 <p className="text-gray-600">
-                  Предоставляем 5 лет гарантии на все виды работ. 
-                  Используем только сертифицированные материалы.
+                  Используем только пищевой пенопласт высокой плотности. 
+                  Идеально подходит для контакта с кондитерскими изделиями.
                 </p>
               </div>
             </div>
@@ -448,7 +448,7 @@ const Index = () => {
             {[
               { icon: 'Phone', title: 'Телефон', info: '+7 (999) 123-45-67' },
               { icon: 'Mail', title: 'Email', info: 'info@falshyarus.ru' },
-              { icon: 'MapPin', title: 'Адрес', info: 'г. Москва, ул. Строителей, 15' }
+              { icon: 'MapPin', title: 'Адрес', info: 'г. Москва, ул. Кондитерская, 25' }
             ].map((contact, index) => (
               <Card key={index} className="bg-gray-800 border-gray-700 text-center">
                 <CardContent className="p-6">
@@ -477,11 +477,11 @@ const Index = () => {
           <div className="flex flex-col md:flex-row justify-between items-center">
             <div className="flex items-center space-x-2 mb-4 md:mb-0">
               <Icon name="Building2" className="text-primary" size={24} />
-              <span className="text-xl font-heading font-bold text-white">ФальшЯрус</span>
+              <span className="text-xl font-heading font-bold text-white">🎂 ФальшЯрус</span>
             </div>
             
             <p className="text-center md:text-right">
-              © 2024 ФальшЯрус. Все права защищены.
+              © 2024 ФальшЯрус. Творим красоту вместе! 🎂
             </p>
           </div>
         </div>
