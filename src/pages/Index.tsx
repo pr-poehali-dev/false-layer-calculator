@@ -189,37 +189,37 @@ const Index = () => {
                 <div className="grid md:grid-cols-2 gap-8">
                   <div className="space-y-6">
                     <div>
-                      <Label htmlFor="width" className="text-base font-medium">Длина (см)</Label>
-                      <Input
-                        id="width"
-                        type="number"
-                        value={dimensions.width || ''}
-                        onChange={(e) => setDimensions({...dimensions, width: Number(e.target.value)})}
-                        placeholder="100"
-                        className="mt-2 h-12 text-base"
-                      />
-                    </div>
-                    
-                    <div>
                       <Label htmlFor="height" className="text-base font-medium">Высота (см)</Label>
                       <Input
                         id="height"
                         type="number"
                         value={dimensions.height || ''}
                         onChange={(e) => setDimensions({...dimensions, height: Number(e.target.value)})}
-                        placeholder="250"
+                        placeholder="10"
                         className="mt-2 h-12 text-base"
                       />
                     </div>
                     
                     <div>
-                      <Label htmlFor="depth" className="text-base font-medium">Глубина (см)</Label>
+                      <Label htmlFor="width" className="text-base font-medium">Ширина (см)</Label>
+                      <Input
+                        id="width"
+                        type="number"
+                        value={dimensions.width || ''}
+                        onChange={(e) => setDimensions({...dimensions, width: Number(e.target.value)})}
+                        placeholder="30"
+                        className="mt-2 h-12 text-base"
+                      />
+                    </div>
+                    
+                    <div>
+                      <Label htmlFor="depth" className="text-base font-medium">Длина (см)</Label>
                       <Input
                         id="depth"
                         type="number"
                         value={dimensions.depth || ''}
                         onChange={(e) => setDimensions({...dimensions, depth: Number(e.target.value)})}
-                        placeholder="20"
+                        placeholder="30"
                         className="mt-2 h-12 text-base"
                       />
                     </div>
@@ -259,9 +259,9 @@ const Index = () => {
                     
                     <div className="space-y-4 mb-6">
                       <div className="flex justify-between">
-                        <span className="text-gray-600">Длина:</span>
+                        <span className="text-gray-600">Объем:</span>
                         <span className="font-semibold">
-                          {dimensions.width} см
+                          {(dimensions.height * dimensions.width * dimensions.depth).toLocaleString()} см³
                         </span>
                       </div>
                       <div className="flex justify-between">
