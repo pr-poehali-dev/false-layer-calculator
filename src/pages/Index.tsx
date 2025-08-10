@@ -25,6 +25,15 @@ const Index = () => {
     city: '',
     businessType: 'individual'
   });
+  const [showOrderForm, setShowOrderForm] = useState(false);
+  const [orderData, setOrderData] = useState({
+    name: '',
+    phone: '',
+    email: '',
+    address: '',
+    city: '',
+    notes: ''
+  });
 
   const addToCart = () => {
     if (dimensions.width && dimensions.height && dimensions.depth) {
@@ -57,6 +66,54 @@ const Index = () => {
       businessType: 'individual'
     });
     alert('Спасибо за регистрацию! Мы свяжемся с вами в ближайшее время.');
+  };
+
+  const handleOrderSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    
+    // Формируем письмо с заказом
+    const orderDetails = cart.map(item => 
+      `• ${item.dimensions.height}×${item.dimensions.width}×${item.dimensions.depth} см - ${
+        item.shape === 'circle' ? 'Круг' : 
+        item.shape === 'square' ? 'Квадрат' : 
+        item.shape === 'hexagon' ? 'Шестиугольник' : 
+        item.shape === 'heart' ? 'Сердце' : 'Ромашка'
+      } - ${item.quantity} шт. - ${item.price.toLocaleString()} ₽`
+    ).join('\n');
+    
+    const totalAmount = cart.reduce((sum, item) => sum + item.price, 0);
+    
+    const emailBody = `НОВЫЙ ЗАКАЗ ОТ GRIGORENKO_CAKES
+
+КЛИЕНТ:
+Имя: ${orderData.name}
+Телефон: ${orderData.phone}
+Email: ${orderData.email}
+Адрес: ${orderData.address}
+Город: ${orderData.city}
+
+ЗАКАЗ:
+${orderDetails}
+
+ОБЩАЯ СУММА: ${totalAmount.toLocaleString()} ₽
+
+КОММЕНТАРИЙ:
+${orderData.notes || 'Нет'}`;
+    
+    try {
+      // Отправляем письмо (в реальном проекте нужно сделать через API)
+      const mailtoLink = `mailto:mtelsv@bk.ru?subject=Новый заказ Grigorenko_cakes&body=${encodeURIComponent(emailBody)}`;
+      window.open(mailtoLink);
+      
+      // Очищаем корзину и форму
+      setCart([]);
+      setOrderData({ name: '', phone: '', email: '', address: '', city: '', notes: '' });
+      setShowOrderForm(false);
+      
+      alert('Заказ отправлен! Мы свяжемся с вами в ближайшее время.');
+    } catch (error) {
+      alert('Ошибка отправки. Попробуйте ещё раз.');
+    }
   };
   
   const calculatePrice = () => {
@@ -122,9 +179,14 @@ const Index = () => {
                   <Icon name="Calculator" size={20} className="mr-2" />
                   Рассчитать стоимость
                 </Button>
-                <Button size="lg" variant="outline" className="border-2 border-primary text-primary hover:bg-primary hover:text-white px-8">
-                  <Icon name="Heart" size={20} className="mr-2" />
-                  Смотреть работы
+                <Button 
+                  size="lg" 
+                  variant="outline" 
+                  onClick={() => setShowRegistration(true)}
+                  className="border-2 border-primary text-primary hover:bg-primary hover:text-white px-8"
+                >
+                  <Icon name="UserPlus" size={20} className="mr-2" />
+                  Регистрация
                 </Button>
               </div>
             </div>
@@ -328,7 +390,10 @@ const Index = () => {
                         </Button>
                         
                         {cart.length > 0 && (
-                          <Button className="w-full bg-primary hover:bg-orange-600 text-white h-12 text-lg">
+                          <Button 
+                            onClick={() => setShowOrderForm(true)}
+                            className="w-full bg-primary hover:bg-orange-600 text-white h-12 text-lg"
+                          >
                             <Icon name="ShoppingCart" size={20} className="mr-2" />
                             Оформить заказ ({cart.length})
                           </Button>
@@ -629,6 +694,157 @@ const Index = () => {
                     type="button" 
                     variant="outline" 
                     onClick={() => setShowRegistration(false)}
+                    className="w-full"
+                  >
+                    Отмена
+                  </Button>
+                </div>
+              </form>
+            </CardContent>
+          </Card>
+        </div>
+      )}
+
+      {/* Форма оформления заказа */}
+      {showOrderForm && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50">
+          <Card className="w-full max-w-2xl max-h-[90vh] overflow-y-auto">
+            <CardHeader>
+              <div className="flex justify-between items-center">
+                <CardTitle className="text-2xl">
+                  <Icon name="Package" className="inline mr-2 text-primary" />
+                  Оформление заказа
+                </CardTitle>
+                <Button 
+                  variant="ghost" 
+                  size="sm"
+                  onClick={() => setShowOrderForm(false)}
+                >
+                  <Icon name="X" size={20} />
+                </Button>
+              </div>
+              <CardDescription>
+                Заполните данные для доставки заказа
+              </CardDescription>
+            </CardHeader>
+            
+            <CardContent className="space-y-6">
+              {/* Список заказов */}
+              <div>
+                <h3 className="font-semibold mb-3">Ваш заказ:</h3>
+                <div className="space-y-2 max-h-40 overflow-y-auto">
+                  {cart.map((item) => (
+                    <div key={item.id} className="flex justify-between items-center p-2 bg-gray-50 rounded">
+                      <span className="text-sm">
+                        {item.dimensions.height}×{item.dimensions.width}×{item.dimensions.depth} см - 
+                        {item.shape === 'circle' ? '⚪ Круг' : 
+                         item.shape === 'square' ? '⬜ Квадрат' : 
+                         item.shape === 'hexagon' ? '⬡ Шестиугольник' : 
+                         item.shape === 'heart' ? '💖 Сердце' : '🌼 Ромашка'}
+                        × {item.quantity}
+                      </span>
+                      <span className="font-semibold text-primary">{item.price.toLocaleString()} ₽</span>
+                    </div>
+                  ))}
+                </div>
+                <div className="flex justify-between items-center pt-2 border-t font-bold text-lg">
+                  <span>Итого:</span>
+                  <span className="text-primary">{cart.reduce((sum, item) => sum + item.price, 0).toLocaleString()} ₽</span>
+                </div>
+              </div>
+
+              {/* Форма данных клиента */}
+              <form onSubmit={handleOrderSubmit} className="space-y-4">
+                <h3 className="font-semibold">Контактные данные:</h3>
+                
+                <div className="grid md:grid-cols-2 gap-4">
+                  <div>
+                    <Label htmlFor="order-name">Имя *</Label>
+                    <Input
+                      id="order-name"
+                      type="text"
+                      required
+                      value={orderData.name}
+                      onChange={(e) => setOrderData({...orderData, name: e.target.value})}
+                      placeholder="Ваше имя"
+                      className="mt-1"
+                    />
+                  </div>
+                  
+                  <div>
+                    <Label htmlFor="order-phone">Телефон *</Label>
+                    <Input
+                      id="order-phone"
+                      type="tel"
+                      required
+                      value={orderData.phone}
+                      onChange={(e) => setOrderData({...orderData, phone: e.target.value})}
+                      placeholder="+7 (XXX) XXX-XX-XX"
+                      className="mt-1"
+                    />
+                  </div>
+                </div>
+                
+                <div>
+                  <Label htmlFor="order-email">Email</Label>
+                  <Input
+                    id="order-email"
+                    type="email"
+                    value={orderData.email}
+                    onChange={(e) => setOrderData({...orderData, email: e.target.value})}
+                    placeholder="your@email.com"
+                    className="mt-1"
+                  />
+                </div>
+                
+                <div className="grid md:grid-cols-2 gap-4">
+                  <div>
+                    <Label htmlFor="order-city">Город *</Label>
+                    <Input
+                      id="order-city"
+                      type="text"
+                      required
+                      value={orderData.city}
+                      onChange={(e) => setOrderData({...orderData, city: e.target.value})}
+                      placeholder="Ваш город"
+                      className="mt-1"
+                    />
+                  </div>
+                  
+                  <div>
+                    <Label htmlFor="order-address">Адрес доставки *</Label>
+                    <Input
+                      id="order-address"
+                      type="text"
+                      required
+                      value={orderData.address}
+                      onChange={(e) => setOrderData({...orderData, address: e.target.value})}
+                      placeholder="Улица, дом, квартира"
+                      className="mt-1"
+                    />
+                  </div>
+                </div>
+                
+                <div>
+                  <Label htmlFor="order-notes">Комментарий к заказу</Label>
+                  <textarea
+                    id="order-notes"
+                    value={orderData.notes}
+                    onChange={(e) => setOrderData({...orderData, notes: e.target.value})}
+                    placeholder="Особые пожелания, время доставки и т.д."
+                    className="mt-1 w-full p-2 border border-gray-300 rounded-md resize-none h-20"
+                  />
+                </div>
+                
+                <div className="pt-4 space-y-3">
+                  <Button type="submit" className="w-full bg-primary hover:bg-orange-600 text-white h-12">
+                    <Icon name="Send" size={20} className="mr-2" />
+                    Отправить заказ
+                  </Button>
+                  <Button 
+                    type="button" 
+                    variant="outline" 
+                    onClick={() => setShowOrderForm(false)}
                     className="w-full"
                   >
                     Отмена
