@@ -35,6 +35,26 @@ const Index = () => {
     notes: ''
   });
 
+  const calculatePrice = () => {
+    if (!dimensions.width || !dimensions.height || !dimensions.depth) return 0;
+    
+    const volume = (dimensions.width * dimensions.height * dimensions.depth) / 1000; // в дм³
+    const basePrice = 50; // цена за дм³
+    let multiplier = 1;
+    
+    // Коэффициент сложности по форме
+    switch(shape) {
+      case 'circle': multiplier = 1.2; break;
+      case 'heart': multiplier = 1.5; break;
+      case 'flower': multiplier = 1.8; break;
+      case 'hexagon': multiplier = 1.3; break;
+      default: multiplier = 1; // square
+    }
+    
+    const price = Math.ceil(volume * basePrice * multiplier * quantity);
+    return Math.max(price, 100); // минимальная стоимость 100₽
+  };
+
   const addToCart = () => {
     if (dimensions.width && dimensions.height && dimensions.depth) {
       const newItem = {
@@ -50,6 +70,55 @@ const Index = () => {
       setQuantity(1);
       setShape('circle');
     }
+  };
+
+  const handleOrderSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    
+    // Формируем данные заказа
+    const orderDetails = cart.map(item => 
+      `${item.dimensions.height}×${item.dimensions.width}×${item.dimensions.depth} см - ${
+        item.shape === 'circle' ? 'Круг' : 
+        item.shape === 'square' ? 'Квадрат' : 
+        item.shape === 'hexagon' ? 'Шестиугольник' : 
+        item.shape === 'heart' ? 'Сердце' : 'Ромашка'
+      } × ${item.quantity} шт. = ${item.price.toLocaleString()} ₽`
+    ).join('\n');
+    
+    const totalPrice = cart.reduce((sum, item) => sum + item.price, 0);
+    
+    // Формируем тело письма
+    const subject = 'Новый заказ Grigorenko_cakes';
+    const body = `Новый заказ от клиента:
+
+КОНТАКТНЫЕ ДАННЫЕ:
+Имя: ${orderData.name}
+Телефон: ${orderData.phone}
+Email: ${orderData.email || 'не указан'}
+Город: ${orderData.city}
+Адрес доставки: ${orderData.address}
+
+ЗАКАЗ:
+${orderDetails}
+
+ОБЩАЯ СТОИМОСТЬ: ${totalPrice.toLocaleString()} ₽
+
+КОММЕНТАРИЙ:
+${orderData.notes || 'нет комментариев'}
+
+---
+Заказ отправлен через сайт Grigorenko_cakes`;
+
+    // Открываем почтовый клиент
+    const mailtoLink = `mailto:mtelsv@bk.ru?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+    window.open(mailtoLink);
+    
+    // Очищаем корзину и форму
+    setCart([]);
+    setOrderData({ name: '', phone: '', email: '', address: '', city: '', notes: '' });
+    setShowOrderForm(false);
+    
+    alert('Заказ отправлен! Проверьте почтовый клиент.');
   };
 
   const handleRegistration = (e: React.FormEvent) => {
