@@ -23,8 +23,8 @@ const Index = () => {
     const widthCm = dimensions.width / 10;
     const depthCm = dimensions.depth / 10;
     
-    // Формула: ((высота+3)*(длинна+3)*(ширина+3))*0.005558
-    const totalPrice = ((heightCm + 3) * (widthCm + 3) * (depthCm + 3)) * 0.005558 * quantity;
+    // Формула: (((высота+3)×(длина+3)×(ширина+3))×0.005558)×5.2
+    const totalPrice = ((heightCm + 3) * (widthCm + 3) * (depthCm + 3)) * 0.005558 * 5.2 * quantity;
     
     return Math.round(totalPrice);
   };
