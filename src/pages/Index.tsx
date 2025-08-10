@@ -6,6 +6,7 @@ import { Label } from '@/components/ui/label';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Badge } from '@/components/ui/badge';
 import Icon from '@/components/ui/icon';
+import { Link } from 'react-router-dom';
 
 const Index = () => {
   const [dimensions, setDimensions] = useState({
@@ -151,10 +152,13 @@ ${orderData.notes || 'Нет'}`;
             
             <div className="hidden md:flex items-center space-x-8">
               <a href="#home" className="text-gray-700 hover:text-primary transition-colors">Главная</a>
-              <a href="#calculator" className="text-gray-700 hover:text-primary transition-colors">Калькулятор</a>
+              <a href="#calculator" className="text-gray-700 hover:text-primary transition-colors">Подложки</a>
+              <Link to="/fake-tiers" className="text-gray-700 hover:text-primary transition-colors flex items-center gap-2">
+                <Icon name="Layers" size={16} />
+                Фальш ярусы
+              </Link>
               <a href="#portfolio" className="text-gray-700 hover:text-primary transition-colors">Портфолио</a>
               <a href="#about" className="text-gray-700 hover:text-primary transition-colors">О нас</a>
-              <a href="#services" className="text-gray-700 hover:text-primary transition-colors">Услуги</a>
               <a href="#contacts" className="text-gray-700 hover:text-primary transition-colors">Контакты</a>
             </div>
             
