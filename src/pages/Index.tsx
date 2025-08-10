@@ -327,9 +327,7 @@ const Index = () => {
             <h2 className="text-4xl font-heading font-bold text-gray-900 mb-4">
               Полный цикл работ
             </h2>
-            <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-              От проектирования до монтажа - предоставляем комплексные решения
-            </p>
+            <p className="text-xl text-gray-600 max-w-2xl mx-auto"></p>
           </div>
           
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
