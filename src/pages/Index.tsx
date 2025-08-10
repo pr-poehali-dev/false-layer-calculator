@@ -55,7 +55,7 @@ const Index = () => {
           <nav className="flex items-center justify-between">
             <div className="flex items-center space-x-2">
               <Icon name="Building2" className="text-primary" size={32} />
-              <h1 className="text-2xl font-heading font-bold text-gray-900">🎂 ФальшЯрус</h1>
+              <h1 className="text-2xl font-heading font-bold text-gray-900">🎂 Grigorenko_cakes</h1>
             </div>
             
             <div className="hidden md:flex items-center space-x-8">
@@ -446,9 +446,9 @@ const Index = () => {
           
           <div className="grid md:grid-cols-3 gap-8 mb-12">
             {[
-              { icon: 'Phone', title: 'Телефон', info: '+7 (999) 123-45-67' },
-              { icon: 'Mail', title: 'Email', info: 'info@falshyarus.ru' },
-              { icon: 'MapPin', title: 'Адрес', info: 'г. Москва, ул. Кондитерская, 25' }
+              { icon: 'Phone', title: 'Телефон', info: '+7(910)556-25-55' },
+              { icon: 'Mail', title: 'Email', info: 'mtelsv@bk.ru' },
+              { icon: 'MapPin', title: 'Адрес', info: '301650 Тульская обл. г. Новомосковск ул. Комсомольская д. 1' }
             ].map((contact, index) => (
               <Card key={index} className="bg-gray-800 border-gray-700 text-center">
                 <CardContent className="p-6">
@@ -477,11 +477,11 @@ const Index = () => {
           <div className="flex flex-col md:flex-row justify-between items-center">
             <div className="flex items-center space-x-2 mb-4 md:mb-0">
               <Icon name="Building2" className="text-primary" size={24} />
-              <span className="text-xl font-heading font-bold text-white">🎂 ФальшЯрус</span>
+              <span className="text-xl font-heading font-bold text-white">🎂 Grigorenko_cakes</span>
             </div>
             
             <p className="text-center md:text-right">
-              © 2024 ФальшЯрус. Творим красоту вместе! 🎂
+              © 2024 Grigorenko_cakes. Творим красоту вместе! 🎂
             </p>
           </div>
         </div>
