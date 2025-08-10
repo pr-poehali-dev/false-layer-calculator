@@ -16,12 +16,30 @@ const Index = () => {
   
   const [shape, setShape] = useState('circle');
   const [quantity, setQuantity] = useState(1);
+  const [cart, setCart] = useState<any[]>([]);
+
+  const addToCart = () => {
+    if (dimensions.width && dimensions.height && dimensions.depth) {
+      const newItem = {
+        id: Date.now(),
+        dimensions: { ...dimensions },
+        shape,
+        quantity,
+        price: calculatePrice()
+      };
+      setCart([...cart, newItem]);
+      // Очищаем форму
+      setDimensions({ width: 0, height: 0, depth: 0 });
+      setQuantity(1);
+      setShape('circle');
+    }
+  };
   
   const calculatePrice = () => {
-    // Конвертируем мм в см
-    const heightCm = dimensions.height / 10;
-    const widthCm = dimensions.width / 10;
-    const depthCm = dimensions.depth / 10;
+    // Данные уже в см
+    const heightCm = dimensions.height;
+    const widthCm = dimensions.width;
+    const depthCm = dimensions.depth;
     
     // Формула: (((высота+3)×(длина+3)×(ширина+3))×0.005558)×5.2
     const totalPrice = ((heightCm + 3) * (widthCm + 3) * (depthCm + 3)) * 0.005558 * 5.2 * quantity;
@@ -111,7 +129,51 @@ const Index = () => {
             </p>
           </div>
           
-          <div className="max-w-4xl mx-auto">
+          <div className="max-w-6xl mx-auto">
+            {/* Корзина заказов */}
+            {cart.length > 0 && (
+              <Card className="mb-8 shadow-lg">
+                <CardHeader>
+                  <CardTitle className="flex items-center justify-between">
+                    <span>Ваши заказы ({cart.length})</span>
+                    <span className="text-primary font-bold">
+                      {cart.reduce((sum, item) => sum + item.price, 0).toLocaleString()} ₽
+                    </span>
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-3">
+                    {cart.map((item) => (
+                      <div key={item.id} className="flex justify-between items-center p-3 bg-gray-50 rounded-lg">
+                        <div>
+                          <span className="font-medium">
+                            {item.dimensions.height}×{item.dimensions.width}×{item.dimensions.depth} см
+                          </span>
+                          <span className="text-gray-600 ml-2">
+                            {item.shape === 'circle' ? '⚪ Круг' : 
+                             item.shape === 'square' ? '⬜ Квадрат' : 
+                             item.shape === 'hexagon' ? '⬡ Шестиугольник' : 
+                             item.shape === 'heart' ? '💖 Сердце' : '🌼 Ромашка'}
+                          </span>
+                          <span className="text-gray-600 ml-2">x{item.quantity}</span>
+                        </div>
+                        <div className="flex items-center space-x-3">
+                          <span className="font-bold text-primary">{item.price.toLocaleString()} ₽</span>
+                          <Button 
+                            size="sm" 
+                            variant="outline" 
+                            onClick={() => setCart(cart.filter(cartItem => cartItem.id !== item.id))}
+                          >
+                            <Icon name="X" size={16} />
+                          </Button>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </CardContent>
+              </Card>
+            )}
+            
             <Card className="shadow-xl animate-scale-in">
               <CardHeader className="bg-gradient-to-r from-primary/5 to-secondary/5">
                 <CardTitle className="flex items-center text-2xl">
@@ -127,37 +189,37 @@ const Index = () => {
                 <div className="grid md:grid-cols-2 gap-8">
                   <div className="space-y-6">
                     <div>
-                      <Label htmlFor="width" className="text-base font-medium">Длина (мм)</Label>
+                      <Label htmlFor="width" className="text-base font-medium">Длина (см)</Label>
                       <Input
                         id="width"
                         type="number"
                         value={dimensions.width || ''}
                         onChange={(e) => setDimensions({...dimensions, width: Number(e.target.value)})}
-                        placeholder="1000"
+                        placeholder="100"
                         className="mt-2 h-12 text-base"
                       />
                     </div>
                     
                     <div>
-                      <Label htmlFor="height" className="text-base font-medium">Высота (мм)</Label>
+                      <Label htmlFor="height" className="text-base font-medium">Высота (см)</Label>
                       <Input
                         id="height"
                         type="number"
                         value={dimensions.height || ''}
                         onChange={(e) => setDimensions({...dimensions, height: Number(e.target.value)})}
-                        placeholder="2500"
+                        placeholder="250"
                         className="mt-2 h-12 text-base"
                       />
                     </div>
                     
                     <div>
-                      <Label htmlFor="depth" className="text-base font-medium">Глубина (мм)</Label>
+                      <Label htmlFor="depth" className="text-base font-medium">Глубина (см)</Label>
                       <Input
                         id="depth"
                         type="number"
                         value={dimensions.depth || ''}
                         onChange={(e) => setDimensions({...dimensions, depth: Number(e.target.value)})}
-                        placeholder="200"
+                        placeholder="20"
                         className="mt-2 h-12 text-base"
                       />
                     </div>
@@ -199,13 +261,13 @@ const Index = () => {
                       <div className="flex justify-between">
                         <span className="text-gray-600">Длина:</span>
                         <span className="font-semibold">
-                          {(dimensions.width / 10).toFixed(1)} см
+                          {dimensions.width} см
                         </span>
                       </div>
                       <div className="flex justify-between">
                         <span className="text-gray-600">Размеры:</span>
                         <span className="font-semibold">
-                          {(dimensions.height / 10).toFixed(1)} × {(dimensions.width / 10).toFixed(1)} × {(dimensions.depth / 10).toFixed(1)} см
+                          {dimensions.height} × {dimensions.width} × {dimensions.depth} см
                         </span>
                       </div>
                       <div className="flex justify-between">
@@ -231,10 +293,23 @@ const Index = () => {
                         </span>
                       </div>
                       
-                      <Button className="w-full bg-primary hover:bg-orange-600 text-white h-12 text-lg">
-                        <Icon name="ShoppingCart" size={20} className="mr-2" />
-                        Оформить заказ
-                      </Button>
+                      <div className="space-y-3">
+                        <Button 
+                          onClick={addToCart}
+                          className="w-full bg-secondary hover:bg-blue-600 text-white h-12 text-lg"
+                          disabled={!dimensions.width || !dimensions.height || !dimensions.depth}
+                        >
+                          <Icon name="Plus" size={20} className="mr-2" />
+                          Добавить в заказ
+                        </Button>
+                        
+                        {cart.length > 0 && (
+                          <Button className="w-full bg-primary hover:bg-orange-600 text-white h-12 text-lg">
+                            <Icon name="ShoppingCart" size={20} className="mr-2" />
+                            Оформить заказ ({cart.length})
+                          </Button>
+                        )}
+                      </div>
                     </div>
                   </div>
                 </div>
