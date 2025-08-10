@@ -18,12 +18,13 @@ const Index = () => {
   const [quantity, setQuantity] = useState(1);
   
   const calculatePrice = () => {
-    const basePrice = 150;
-    const area = (dimensions.width * dimensions.height) / 10000; // конвертация в кв.м
-    const volume = (dimensions.width * dimensions.height * dimensions.depth) / 1000000; // в куб.м
+    // Конвертируем мм в см
+    const heightCm = dimensions.height / 10;
+    const widthCm = dimensions.width / 10;
+    const depthCm = dimensions.depth / 10;
     
-    const shapeMultiplier = shape === 'heart' || shape === 'flower' ? 1.8 : shape === 'hexagon' ? 1.3 : shape === 'square' ? 1.1 : 1;
-    const totalPrice = basePrice * area * volume * shapeMultiplier * quantity;
+    // Формула: ((высота+3)*(длинна+3)*(ширина+3))*0.005558
+    const totalPrice = ((heightCm + 3) * (widthCm + 3) * (depthCm + 3)) * 0.005558 * quantity;
     
     return Math.round(totalPrice);
   };
@@ -126,7 +127,7 @@ const Index = () => {
                 <div className="grid md:grid-cols-2 gap-8">
                   <div className="space-y-6">
                     <div>
-                      <Label htmlFor="width" className="text-base font-medium">Ширина (мм)</Label>
+                      <Label htmlFor="width" className="text-base font-medium">Длина (мм)</Label>
                       <Input
                         id="width"
                         type="number"
@@ -196,15 +197,15 @@ const Index = () => {
                     
                     <div className="space-y-4 mb-6">
                       <div className="flex justify-between">
-                        <span className="text-gray-600">Площадь:</span>
+                        <span className="text-gray-600">Длина:</span>
                         <span className="font-semibold">
-                          {((dimensions.width * dimensions.height) / 10000).toFixed(2)} м²
+                          {(dimensions.width / 10).toFixed(1)} см
                         </span>
                       </div>
                       <div className="flex justify-between">
-                        <span className="text-gray-600">Объем:</span>
+                        <span className="text-gray-600">Размеры:</span>
                         <span className="font-semibold">
-                          {((dimensions.width * dimensions.height * dimensions.depth) / 1000000).toFixed(3)} м³
+                          {(dimensions.height / 10).toFixed(1)} × {(dimensions.width / 10).toFixed(1)} × {(dimensions.depth / 10).toFixed(1)} см
                         </span>
                       </div>
                       <div className="flex justify-between">
