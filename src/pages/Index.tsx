@@ -366,18 +366,30 @@ const Index = () => {
             </p>
           </div>
           
-          <div className="grid md:grid-cols-3 gap-8">
-            {[1, 2, 3].map((item) => (
-              <Card key={item} className="overflow-hidden hover:shadow-xl transition-all duration-300 animate-scale-in">
-                <div className="h-48 bg-gradient-to-br from-primary/20 to-secondary/20 flex items-center justify-center">
-                  <Icon name="Image" size={48} className="text-primary opacity-50" />
+          <div className="grid md:grid-cols-3 lg:grid-cols-6 gap-6">
+            {[
+              { id: 1, url: 'https://cdn.poehali.dev/files/c1b2ae39-f8d7-42e6-a026-b6c3fd341db6.jpg', title: 'Многоярусная основа с сердцем', desc: 'Комбинированная композиция из квадратных и круглых ярусов с фигурным топпером-сердцем' },
+              { id: 2, url: 'https://cdn.poehali.dev/files/a167960b-4793-4732-8ec0-e7da874b59fd.jpg', title: 'Шестиугольник и круг', desc: 'Современная геометрическая композиция с шестиугольными и круглыми формами' },
+              { id: 3, url: 'https://cdn.poehali.dev/files/ae35b09b-f3c1-4135-bce3-b68b73193dc2.jpg', title: 'Классический круглый ярус', desc: 'Круглая основа идеальной формы с текстурированной поверхностью' },
+              { id: 4, url: 'https://cdn.poehali.dev/files/2a1eac79-3f59-4459-bf1d-17fd07d40b34.jpg', title: 'Микс геометрических форм', desc: 'Разнообразие форм: квадрат, круг и шестиугольник для креативных проектов' },
+              { id: 5, url: 'https://cdn.poehali.dev/files/3460dc0c-1e9c-4583-b901-2364b3fb70cc.jpg', title: 'Квадратная основа', desc: 'Точная квадратная форма с идеальными гранями для современных тортов' },
+              { id: 6, url: 'https://cdn.poehali.dev/files/c1b2ae39-f8d7-42e6-a026-b6c3fd341db6.jpg', title: 'Сложная композиция', desc: 'Многоуровневая конструкция различных размеров и форм' }
+            ].map((work) => (
+              <Card key={work.id} className="overflow-hidden hover:shadow-xl transition-all duration-300 animate-scale-in group">
+                <div className="relative h-64 overflow-hidden">
+                  <img 
+                    src={work.url} 
+                    alt={work.title}
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                  />
+                  <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-300"></div>
                 </div>
-                <CardContent className="p-6">
-                  <h3 className="text-xl font-heading font-bold mb-2">Проект #{item}</h3>
-                  <p className="text-gray-600 mb-4">
-                    Описание выполненных работ по изготовлению фальш ярусов
+                <CardContent className="p-4">
+                  <h3 className="text-sm font-heading font-bold mb-2 line-clamp-2">{work.title}</h3>
+                  <p className="text-xs text-gray-600 mb-3 line-clamp-3">
+                    {work.desc}
                   </p>
-                  <Badge variant="outline">Завершен</Badge>
+                  <Badge variant="outline" className="text-xs">Выполнено</Badge>
                 </CardContent>
               </Card>
             ))}
